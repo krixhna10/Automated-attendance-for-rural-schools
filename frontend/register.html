@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration - Attendance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <span>Attendance System</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="register.html" class="nav-link active">Register</a>
+                <a href="attendance.html" class="nav-link">Attendance</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="student-report.html" class="nav-link">Student Report</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="card-header">
+                    <h1 class="card-title">👤 Register New Student</h1>
+                    <p class="card-subtitle">Capture student photo and register with face recognition</p>
+                </div>
+
+                <div class="card-body">
+                    <!-- Registration Form -->
+                    <form id="registrationForm">
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="rollNumber">Roll Number *</label>
+                                <input type="text" id="rollNumber" class="form-input" placeholder="e.g., 2024001"
+                                    required autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="name">Student Name *</label>
+                                <input type="text" id="name" class="form-input" placeholder="e.g., John Doe" required
+                                    autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="class">Class *</label>
+                                <input type="text" id="class" class="form-input" placeholder="e.g., 10" required
+                                    autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="section">Section *</label>
+                                <input type="text" id="section" class="form-input" placeholder="e.g., A" required
+                                    maxlength="1" autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email (Optional)</label>
+                                <input type="email" id="email" class="form-input" placeholder="student@example.com"
+                                    autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Phone (Optional)</label>
+                                <input type="tel" id="phone" class="form-input" placeholder="+91 1234567890"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+
+                        <!-- Camera Section -->
+                        <div class="form-group mt-lg">
+                            <label class="form-label">Face Photo *</label>
+
+                            <div id="cameraSection">
+                                <!-- Video Feed -->
+                                <div class="video-container">
+                                    <video id="video" class="video-feed" autoplay muted playsinline></video>
+                                    <canvas id="overlay" class="video-overlay"></canvas>
+                                    <div id="videoStatus" class="video-status">
+                                        <span id="statusText">Initializing camera...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Camera Controls -->
+                                <div style="margin-top: 1rem; text-align: center;">
+                                    <button type="button" id="startCameraBtn" class="btn btn-primary">
+                                        📷 Start Camera
+                                    </button>
+                                    <button type="button" id="captureFaceBtn" class="btn btn-success hidden">
+                                        ✓ Capture Face
+                                    </button>
+                                    <button type="button" id="retakeBtn" class="btn btn-secondary hidden">
+                                        🔄 Retake
+                                    </button>
+                                </div>
+
+                                <!-- Face Status -->
+                                <div id="faceStatus" class="mt-md hidden"></div>
+                            </div>
+
+                            <!-- Captured Photo Preview -->
+                            <div id="photoPreview" class="hidden mt-md">
+                                <p class="text-center" style="color: var(--success-color); font-weight: 600;">
+                                    ✅ Face captured successfully!
+                                </p>
+                                <img id="capturedPhoto"
+                                    style="max-width: 300px; border-radius: var(--border-radius); margin: 1rem auto; display: block; box-shadow: var(--shadow-lg);">
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-group mt-lg">
+                            <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-block" disabled>
+                                Register Student
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Loading Indicator -->
+                    <div id="loadingIndicator" class="hidden loading">
+                        <div class="spinner"></div>
+                        <p class="mt-md">Processing registration...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="card mt-lg" style="max-width: 800px; margin: 2rem auto 0;">
+                <div class="card-header">
+                    <h2 class="card-title">📋 Instructions</h2>
+                </div>
+                <div class="card-body">
+                    <ol style="color: var(--text-secondary); line-height: 2;">
+                        <li>Fill in the student details (roll number, name, class, section)</li>
+                        <li>Click "Start Camera" to activate the webcam</li>
+                        <li>Position the student's face in the camera view</li>
+                        <li>Ensure good lighting and the face is clearly visible</li>
+                        <li>Click "Capture Face" when the face is detected</li>
+                        <li>Click "Register Student" to complete registration</li>
+                    </ol>
+                    <div class="alert alert-info mt-md">
+                        <strong>💡 Tip:</strong> Make sure the student is looking directly at the camera with good
+                        lighting for best results.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/faceRecognition.js"></script>
+    <script src="js/register.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Attendance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <span>Attendance System</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="register.html" class="nav-link">Register</a>
+                <a href="attendance.html" class="nav-link">Attendance</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="student-report.html" class="nav-link">Student Report</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="card mb-lg">
+                <div class="card-header">
+                    <h1 class="card-title">📊 Teacher Dashboard</h1>
+                    <p class="card-subtitle">View attendance reports and statistics</p>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid mb-lg">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalStudents">-</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="presentToday">-</div>
+                    <div class="stat-label">Present Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="absentToday">-</div>
+                    <div class="stat-label">Absent Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="attendanceRate">-</div>
+                    <div class="stat-label">Attendance Rate</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="card mb-lg">
+                <div class="card-header">
+                    <h2 class="card-title">🔍 Filters</h2>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-4">
+                        <div class="form-group">
+                            <label class="form-label" for="filterDate">Date</label>
+                            <input type="date" id="filterDate" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="filterClass">Class</label>
+                            <input type="text" id="filterClass" class="form-input" placeholder="e.g., 10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="filterSection">Section</label>
+                            <input type="text" id="filterSection" class="form-input" placeholder="e.g., A"
+                                maxlength="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="filterRollNumber">Roll Number</label>
+                            <input type="text" id="filterRollNumber" class="form-input" placeholder="e.g., 2024001">
+                        </div>
+                    </div>
+                    <div class="mt-md">
+                        <button id="applyFiltersBtn" class="btn btn-primary">Apply Filters</button>
+                        <button id="clearFiltersBtn" class="btn btn-secondary">Clear Filters</button>
+                        <button id="exportBtn" class="btn btn-success">📥 Export CSV</button>
+                        <button id="notifyAbsenteesBtn" class="btn btn-warning"
+                            style="background-color: #f0ad4e; color: white;">📧 Notify Absentees</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Report -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📋 Attendance Report</h2>
+                    <p class="card-subtitle" id="reportSubtitle">Showing today's attendance</p>
+                </div>
+                <div class="card-body">
+                    <div id="reportContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p class="mt-md">Loading attendance data...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student List -->
+            <div class="card mt-lg">
+                <div class="card-header">
+                    <h2 class="card-title">👥 Registered Students</h2>
+                </div>
+                <div class="card-body">
+                    <div id="studentListContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/faceRecognition.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

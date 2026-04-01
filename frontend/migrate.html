@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migrate Face Descriptors - Attendance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🔄</div>
+                <span>Data Migration Tool</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="student-report.html" class="nav-link">Student Report</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="card-header">
+                    <h1 class="card-title">🔄 Update Face Descriptors</h1>
+                    <p class="card-subtitle">Regenerate student face data for new recognition models</p>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-warning mb-lg">
+                        <strong>⚠️ Important:</strong> This tool will process all registered students and regenerate
+                        their face descriptors using the latest models.
+                        This is required after updating the face recognition system.
+                    </div>
+
+                    <div id="statusSection" class="text-center">
+                        <button id="startBtn" class="btn btn-primary btn-lg">
+                            🚀 Start Migration
+                        </button>
+
+                        <div id="progressContainer" class="hidden mt-lg">
+                            <div class="progress-bar-container">
+                                <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                            </div>
+                            <p id="progressText" class="mt-sm text-secondary">0% complete</p>
+                        </div>
+                    </div>
+
+                    <div id="logContainer" class="mt-lg"
+                        style="max-height: 300px; overflow-y: auto; background: #f8fafc; padding: 1rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; font-family: monospace; font-size: 0.9rem;">
+                        <div class="log-entry">Waiting to start...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/faceRecognition.js"></script>
+    <script src="js/migrate.js"></script>
+</body>
+
+</html>

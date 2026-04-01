@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report - Attendance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card-portal {
+            background-color: var(--bg-surface);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+
+        .stat-card-portal h4 {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-portal .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-table th {
+            background-color: var(--bg-secondary);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-present {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-absent {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 3rem auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <span>Attendance System</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="register.html" class="nav-link">Register</a>
+                <a href="attendance.html" class="nav-link">Attendance</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="student-report.html" class="nav-link active">Student Report</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="card mb-lg">
+                <div class="card-header text-center">
+                    <h2 class="card-title">Student Report</h2>
+                    <p class="card-subtitle">Check your attendance report and history</p>
+                </div>
+                <div class="card-body search-container">
+                    <form id="searchForm" class="flex" style="gap: 1rem;">
+                        <input type="text" id="rollNumberInput" class="form-control" placeholder="Enter Roll Number"
+                            required style="flex: 1;">
+                        <button type="submit" class="btn btn-primary" id="searchBtn">
+                            <span class="btn-text">Search</span>
+                        </button>
+                    </form>
+                    <div id="errorMessage" class="alert alert-error mt-md" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="text-center mb-lg" style="display: none;">
+                <div class="spinner"></div>
+                <p class="mt-sm text-secondary">Fetching attendance data...</p>
+            </div>
+
+            <!-- Results Section (Hidden by Default) -->
+            <div id="resultsSection" style="display: none;">
+                <!-- Student Info -->
+                <div class="card mb-lg">
+                    <div class="card-body">
+                        <div class="flex"
+                            style="justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <h3 id="studentName" style="font-size: 1.5rem; margin-bottom: 0.25rem;">-</h3>
+                                <p id="studentDetails" class="text-secondary">-</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="badge" id="studentStatus">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <h3 class="mb-md">Attendance Summary</h3>
+                <div class="stats-grid">
+                    <div class="stat-card-portal">
+                        <h4>Total Days</h4>
+                        <div class="value" id="totalDays">0</div>
+                    </div>
+                    <div class="stat-card-portal">
+                        <h4>Present</h4>
+                        <div class="value" id="presentDays" style="color: var(--success-color);">0</div>
+                    </div>
+                    <div class="stat-card-portal">
+                        <h4>Absent</h4>
+                        <div class="value" id="absentDays" style="color: var(--error-color);">0</div>
+                    </div>
+                    <div class="stat-card-portal">
+                        <h4>Attendance Rate</h4>
+                        <div class="value" id="attendanceRate">0%</div>
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Attendance History</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Method</th>
+                                    <th>Recorded At</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- Records populated by JS -->
+                            </tbody>
+                        </table>
+                        <div id="emptyHistory" class="text-center text-secondary p-md" style="display: none;">
+                            No attendance records found.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); margin-top: auto;">
+        <p>&copy; 2026 Automated Attendance System. Built for Rural Schools.</p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/student-report.js"></script>
+</body>
+
+</html>

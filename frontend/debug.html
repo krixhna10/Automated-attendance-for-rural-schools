@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Debugger</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .log {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #333;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        .info {
+            color: #60a5fa;
+        }
+
+        .warning {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🐞 System Debugger</h1>
+    <div id="logs"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+    <script src="js/config.js"></script>
+    <script>
+        const logs = document.getElementById('logs');
+
+        function log(msg, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logs.appendChild(div);
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        async function verifyResource(url, name) {
+            log(`Checking ${name}: ${url}...`);
+            try {
+                const res = await fetch(url, { method: 'HEAD' });
+                if (res.ok) {
+                    log(`✅ ${name} found (${res.status})`, 'success');
+                    return true;
+                } else {
+                    log(`❌ ${name} returned ${res.status}`, 'error');
+                    return false;
+                }
+            } catch (e) {
+                log(`❌ ${name} failed: ${e.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function runDiagnostics() {
+            log('Starting diagnostics...', 'info');
+
+            // 1. Check Backend
+            log('Step 1: Checking Backend Connectivity');
+            try {
+                const res = await fetch(API_ENDPOINTS.health);
+                const data = await res.json();
+                log(`✅ Backend is healthy: ${data.message}`, 'success');
+            } catch (e) {
+                log(`❌ Backend check failed: ${e.message}`, 'error');
+                log('⚠️ Ensure server is running on port 5000', 'warning');
+            }
+
+            // 2. Check Models Directory
+            log('Step 2: Checking Model Files');
+            const models = [
+                'tiny_face_detector_model-weights_manifest.json',
+                'tiny_face_detector_model.bin',
+                'face_landmark_68_model-weights_manifest.json',
+                'face_landmark_68_model.bin',
+                'face_recognition_model-weights_manifest.json',
+                'face_recognition_model.bin'
+            ];
+
+            const modelBase = FACE_CONFIG.modelPath || './models';
+
+            for (const file of models) {
+                await verifyResource(`${modelBase}/${file}`, file);
+            }
+
+            // 3. Test Model Loading
+            log('Step 3: Loading Face API Models');
+            try {
+                await faceapi.nets.tinyFaceDetector.loadFromUri(modelBase);
+                log('✅ TinyFaceDetector loaded', 'success');
+
+                await faceapi.nets.faceLandmark68Net.loadFromUri(modelBase);
+                log('✅ FaceLandmark68Net loaded', 'success');
+
+                await faceapi.nets.faceRecognitionNet.loadFromUri(modelBase);
+                log('✅ FaceRecognitionNet loaded', 'success');
+            } catch (e) {
+                log(`❌ Model loading failed: ${e.message}`, 'error');
+                console.error(e);
+            }
+
+            // 4. Check Backend Data
+            log('Step 4: Checking Backend Data API');
+            try {
+                const res = await fetch(API_ENDPOINTS.attendance.stats);
+                const data = await res.json();
+                if (data.success) {
+                    log(`✅ Stats API working. Total students: ${data.stats.totalStudents}`, 'success');
+                } else {
+                    log(`❌ Stats API returned error: ${data.message}`, 'error');
+                }
+            } catch (e) {
+                log(`❌ Stats API failed: ${e.message}`, 'error');
+            }
+
+            log('Diagnostics complete.', 'info');
+        }
+
+        runDiagnostics();
+    </script>
+</body>
+
+</html>

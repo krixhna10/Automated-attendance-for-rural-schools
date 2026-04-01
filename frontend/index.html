@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Automated Attendance System for Rural Schools using Face Recognition">
+    <title>Attendance System - Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <span>Attendance System</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="register.html" class="nav-link">Register</a>
+                <a href="attendance.html" class="nav-link">Attendance</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="student-report.html" class="nav-link">Student Report</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <div class="card text-center mb-lg">
+                <div class="card-body">
+                    <h1>🎓 Automated Attendance System</h1>
+                    <p style="font-size: 1.125rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+                        Face recognition-based attendance tracking for rural schools.
+                        Fast, accurate, and easy to use.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-3 mb-lg">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">👤</div>
+                        <h3>Student Registration</h3>
+                        <p>Register students with their facial data in seconds. Simple and secure.</p>
+                        <a href="register.html" class="btn btn-primary mt-md">Register Student</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📸</div>
+                        <h3>Mark Attendance</h3>
+                        <p>Automatic face recognition to mark attendance. No manual entry needed.</p>
+                        <a href="attendance.html" class="btn btn-primary mt-md">Mark Attendance</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <h3>View Reports</h3>
+                        <p>Track attendance statistics and generate detailed reports.</p>
+                        <a href="dashboard.html" class="btn btn-primary mt-md">View Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Information -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">System Information</h2>
+                    <p class="card-subtitle">How the attendance system works</p>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-2">
+                        <div>
+                            <h3>✨ Features</h3>
+                            <ul style="color: var(--text-secondary); line-height: 2;">
+                                <li>Face recognition using AI</li>
+                                <li>Automatic duplicate prevention</li>
+                                <li>Real-time attendance tracking</li>
+                                <li>Detailed attendance reports</li>
+                                <li>Low-bandwidth optimized</li>
+                                <li>Works offline (after initial setup)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>🚀 Quick Start</h3>
+                            <ol style="color: var(--text-secondary); line-height: 2;">
+                                <li>Register students with their photos</li>
+                                <li>Open the attendance page</li>
+                                <li>Students face the camera</li>
+                                <li>System automatically marks attendance</li>
+                                <li>View reports on the dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="card mt-lg">
+                <div class="card-header">
+                    <h2 class="card-title">Technology Stack</h2>
+                    <p class="card-subtitle">Built with free and open-source technologies</p>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-4">
+                        <div class="stat-card">
+                            <div class="stat-value">face-api.js</div>
+                            <div class="stat-label">Face Recognition</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">Node.js</div>
+                            <div class="stat-label">Backend Server</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">MongoDB</div>
+                            <div class="stat-label">Database</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">HTML/CSS/JS</div>
+                            <div class="stat-label">Frontend</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Status -->
+            <div class="card mt-lg">
+                <div class="card-header">
+                    <h2 class="card-title">Server Status</h2>
+                </div>
+                <div class="card-body">
+                    <div id="serverStatus" class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        <p>&copy; 2026 Automated Attendance System. Built for Rural Schools.</p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Check server status on page load
+        async function checkServerStatus() {
+            const statusDiv = document.getElementById('serverStatus');
+
+            try {
+                const response = await fetch(API_ENDPOINTS.health);
+                const data = await response.json();
+
+                if (data.success) {
+                    statusDiv.innerHTML = `
+            <div class="alert alert-success">
+              <strong>✅ Server is running</strong><br>
+              Backend API is online and ready to use.<br>
+              <small>Last checked: ${new Date(data.timestamp).toLocaleString()}</small>
+            </div>
+          `;
+                } else {
+                    throw new Error('Server returned error');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+          <div class="alert alert-error">
+            <strong>❌ Server is offline</strong><br>
+            Cannot connect to backend API. Please ensure the server is running.<br>
+            <small>Run: cd backend && npm install && npm start</small>
+          </div>
+        `;
+            }
+        }
+
+        // Check status on page load
+        checkServerStatus();
+    </script>
+</body>
+
+</html>
